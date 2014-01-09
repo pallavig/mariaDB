@@ -1,0 +1,24 @@
+[done]adding customer
+adding product
+placing order
+
+
+If user is not register user
+	After registering user will redirect to place order
+if user is registered
+	give id and place order
+
+Place order
+	check if valid customer
+	page with product list
+	place order with quantity
+	redirect to payment page
+
+Payment
+
+
+Adding customer
+	Give cust_id created
+
+*checking if customer is present or not
+*url problems

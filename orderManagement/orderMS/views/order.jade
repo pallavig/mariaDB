@@ -1,0 +1,31 @@
+html
+  head
+    title
+  body
+    a(href='/home') HOME
+    p
+    form(name='orderDetails', action='placeOrder', method='post')
+      | Customer ID:
+      input(type='textbox', name='custId')
+      p
+        table(border='2')
+          tr
+            th Product Name
+            th Unit Price
+            th Quantity
+            th Want to Buy
+          -var products = allproducts;
+          -each product in products
+            -var qtyName = 'qty' + product.product_id
+            -var hasBoughtName = 'selection' + product.product_id
+            -var priceName = "price" + product.product_id
+            tr
+              td #{product.product_name}
+              td 
+                input(type='textbox', readonly='' ,name=priceName,value=product.unit_price)
+              td 
+                input(type='textbox',name=qtyName)
+              td 
+                input(type='checkbox',name=hasBoughtName)
+        br
+        input(type='submit', value='submit')

@@ -1,0 +1,50 @@
+html
+  head
+    title Order Management System
+  body
+    a(href='/order') PLACE ORDER
+    p
+    -var message = givenMessage
+    b #{message}
+    p
+    b Cusomer Registration Form
+    p
+    form(action='submit' method='post')
+      table
+        tr
+          td
+            | Name:
+          td
+            input(type='text', name='name')
+        tr
+          td
+            | Address1:
+          td
+            input(type='text', name='add1')
+        tr
+          td
+            | Address2:
+          td
+            input(type='text', name='add2')
+        tr
+          td
+            | City:
+          td
+            input(type='text', name='city')
+        tr
+          td
+            | State:
+          td
+            input(type='text', name='state')
+        tr
+          td
+            | Pin:
+          td
+            input(type='text', name='pin')
+        tr
+          td
+            | Contact No:
+          td
+            input(type='text', name='contact')
+        
+      input(type='submit', value='Submit')
