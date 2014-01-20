@@ -1,0 +1,10 @@
+html
+  head
+    title Payment Page
+  body
+    a(href='home') HOME
+    br
+    b #{totalAmount}
+    br
+    form(action='paid', method='get')
+      input(type='submit', value='Pay')

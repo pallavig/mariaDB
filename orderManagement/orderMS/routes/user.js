@@ -48,6 +48,7 @@ exports.order = function(req,res){
 
 exports.registration = function(req, res){
 	var connection = createConnection();
+	var cust_id;
 	var name = req.body.name;
 	var add1 = req.body.add1;
 	var add2 = req.body.add2;
@@ -59,13 +60,17 @@ exports.registration = function(req, res){
 	"values('" + name + "','" + add1 + "','" + add2 + "','" + city + "','" + state + "',"  +
 	pin + "," + contact + ");";
 	executeQuery(queryToAddCustomer,connection);
-	commit(connection);
-	connection.end();
-	res.render('home',{givenMessage:"customer added Successfully"});
-	res.end();
+	var query = "select max(cust_id) as cust_id from customer;";
+	connection.query(query,function(err,rows,fields){
+		cust_id = rows[0].cust_id;
+		connection.end();
+		res.render('home',{givenMessage:"customer added Successfully with "+cust_id});
+		res.end();
+	})
+	// commit(connection);
 }
 
-var addOrder = function(cust_id,products,quantities,unit_prices){
+var addOrder = function(cust_id,products,quantities,unit_prices,res){
 	var connection = createConnection();
 	var order_id,total_bill = 0,price;
 	var query = "select max(order_id) as order_id from orders;";
@@ -84,7 +89,11 @@ var addOrder = function(cust_id,products,quantities,unit_prices){
 		}
 		var queryForPayment = "insert into payment (order_id,hasPaid,amount,date_of_payment,payment_mode) values(" +
 			order_id + ",'y'," + (+total_bill) + ",current_date,'cash');";
+		executeQuery(queryForPayment,connection);
 		commit(connection);
+		console.log("Came here");
+		res.redirect('/payment?totalAmount='+total_bill+'&status=not+paid');
+		res.end();
 	});
 
 };
@@ -103,7 +112,13 @@ exports.placeOrder = function(req,res){
 			unit_prices.push(unit_price);
 		}
 	});
-	addOrder(cust_id,products,quantitiesOfProducts,unit_prices);
-	res.render('home',{givenMessage:"order added Successfully"});
-	res.end();
-};
+	addOrder(cust_id,products,quantitiesOfProducts,unit_prices,res);
+;};
+
+exports.payment = function(req,res){
+	res.render('payment',{totalAmount:"Total Amount is "+req.query.totalAmount});
+}
+
+exports.paid = function(req,res){
+	res.redirect('payment?totalAmount=Paid');	
+}
